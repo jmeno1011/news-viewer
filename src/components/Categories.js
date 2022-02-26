@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const categories = [
@@ -32,14 +33,15 @@ const categories = [
   },
 ];
 
-const Categories = ({ category, onSelect }) => {
+const Categories = () => {
   return (
     <CategoriesBlock>
       {categories.map((c) => (
+        // <NavLink>로 감싸져있는 거랑 같은거임
         <Category
           key={c.name}
-          active={category === c.name}
-          onClick={() => onSelect(c.name)}
+          className={({ isActive }) => (isActive ? "active" : undefined)}
+          to={c.name === "all" ? "/" : `/${c.name}`}
         >
           {c.text}
         </Category>
@@ -61,7 +63,8 @@ const CategoriesBlock = styled.div`
   }
 `;
 
-const Category = styled.div`
+// <Category></Category> => <NavLink></NavLink>
+const Category = styled(NavLink)`
   font-size: 1.125rem;
   cursor: pointer;
   white-space: pre;
@@ -72,16 +75,16 @@ const Category = styled.div`
   &:hover {
     color: #495057;
   }
-  ${(props) =>
-    props.active &&
-    css`
-      font-weight: 600;
-      border-bottom: 2px solid #22b8cf;
-      color: #22b8cf;
-      &:hover {
-        color: #3bc9db;
-      }
-    `}
+
+  &.active {
+    font-weight: 600;
+    border-bottom: 2px solid #22b8cf;
+    color: #22b8cf;
+    &:hover {
+      color: #3bc9db;
+    }
+  }
+
   & + & {
     margin-left: 1rem;
   }
